@@ -2,7 +2,6 @@ package test
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"github.com/FruitPunchSamurai1961/goalphavantage"
 	"github.com/stretchr/testify/assert"
@@ -40,8 +39,7 @@ func TestGetNewsSentimentWithTickerOption(t *testing.T) {
 	resInvalid, errInvalid := c.GetNewsSentiment(ctx, &optionsInvalid)
 	assert.NotNil(t, errInvalid, "expecting non-nil error for invalid tickers")
 
-	var apiError *goalphavantage.APIError
-	ok := errors.As(errInvalid, &apiError)
+	ok := goalphavantage.IsAPIError(errInvalid)
 	assert.True(t, ok, fmt.Sprintf("expecting APIError got: %v", errInvalid))
 
 	assert.Nil(t, resInvalid, "expecting nil result for invalid tickers")
