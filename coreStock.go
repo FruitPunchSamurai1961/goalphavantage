@@ -86,51 +86,51 @@ type CoreStockSharedInputOptions struct {
 }
 
 type MetaData struct {
-	Information   string `json:"1. Information,omitempty"`
-	Symbol        string `json:"2. Symbol,omitempty"`
-	LastRefreshed string `json:"3. Last Refreshed,omitempty"`
-	Interval      string `json:"4. Interval,omitempty"`
-	OutputSize    string `json:"5. Output Size,omitempty"`
-	TimeZone      string `json:"6. Time Zone,omitempty"`
+	Information   *string `json:"1. Information,omitempty"`
+	Symbol        *string `json:"2. Symbol,omitempty"`
+	LastRefreshed *string `json:"3. Last Refreshed,omitempty"`
+	Interval      *string `json:"4. Interval,omitempty"`
+	OutputSize    *string `json:"5. Output Size,omitempty"`
+	TimeZone      *string `json:"6. Time Zone,omitempty"`
 }
 
 type CoreStockData struct {
-	Open                  string `json:"1. open"`
-	High                  string `json:"2. high"`
-	Low                   string `json:"3. low"`
-	Close                 string `json:"4. close"`
-	Volume                string `json:"5. volume,omitempty"`
-	AdjustedClose         string `json:"5. adjusted close,omitempty"`
-	VolumeForAdjustedCall string `json:"6. volume,omitempty"`
-	DividendAmount        string `json:"7. dividend amount,omitempty"`
+	Open                  *string `json:"1. open"`
+	High                  *string `json:"2. high"`
+	Low                   *string `json:"3. low"`
+	Close                 *string `json:"4. close"`
+	Volume                *string `json:"5. volume,omitempty"`
+	AdjustedClose         *string `json:"5. adjusted close,omitempty"`
+	VolumeForAdjustedCall *string `json:"6. volume,omitempty"`
+	DividendAmount        *string `json:"7. dividend amount,omitempty"`
 }
 
 type GlobalQuote struct {
-	Symbol           string `json:"01. symbol"`
-	Open             string `json:"02. open"`
-	High             string `json:"03. high"`
-	Low              string `json:"04. low"`
-	Price            string `json:"05. price"`
-	Volume           string `json:"06. volume"`
-	LatestTradingDay string `json:"07. latest trading day"`
-	PreviousClose    string `json:"08. previous close"`
-	Change           string `json:"09. change"`
-	ChangePercent    string `json:"10. change percent"`
+	Symbol           *string `json:"01. symbol"`
+	Open             *string `json:"02. open"`
+	High             *string `json:"03. high"`
+	Low              *string `json:"04. low"`
+	Price            *string `json:"05. price"`
+	Volume           *string `json:"06. volume"`
+	LatestTradingDay *string `json:"07. latest trading day"`
+	PreviousClose    *string `json:"08. previous close"`
+	Change           *string `json:"09. change"`
+	ChangePercent    *string `json:"10. change percent"`
 }
 
 type CoreStockResponse struct {
-	MetaData                  MetaData                 `json:"Meta Data,omitempty"`
-	MonthlyAdjustedTimeSeries map[string]CoreStockData `json:"Monthly Adjusted Time Series,omitempty"`
-	MonthlyTimeSeries         map[string]CoreStockData `json:"Monthly Time Series,omitempty"`
-	OneMinTimeSeries          map[string]CoreStockData `json:"Time Series (1min),omitempty"`
-	FiveMinTimeSeries         map[string]CoreStockData `json:"Time Series (5min),omitempty"`
-	FifteenMinTimeSeries      map[string]CoreStockData `json:"Time Series (15min),omitempty"`
-	ThirtyMinTimeSeries       map[string]CoreStockData `json:"Time Series (30min),omitempty"`
-	HourTimeSeries            map[string]CoreStockData `json:"Time Series (60min),omitempty"`
-	DailyTimeSeries           map[string]CoreStockData `json:"Time Series (Daily),omitempty"`
-	WeeklyTimeSeries          map[string]CoreStockData `json:"Weekly Time Series,omitempty"`
-	WeeklyAdjustedTimeSeries  map[string]CoreStockData `json:"Weekly Adjusted Time Series,omitempty"`
-	LatestQuote               GlobalQuote              `json:"Global Quote,omitempty"`
+	MetaData                  *MetaData                 `json:"Meta Data,omitempty"`
+	LatestQuote               *GlobalQuote              `json:"Global Quote,omitempty"`
+	MonthlyAdjustedTimeSeries map[string]*CoreStockData `json:"Monthly Adjusted Time Series,omitempty"`
+	MonthlyTimeSeries         map[string]*CoreStockData `json:"Monthly Time Series,omitempty"`
+	OneMinTimeSeries          map[string]*CoreStockData `json:"Time Series (1min),omitempty"`
+	FiveMinTimeSeries         map[string]*CoreStockData `json:"Time Series (5min),omitempty"`
+	FifteenMinTimeSeries      map[string]*CoreStockData `json:"Time Series (15min),omitempty"`
+	ThirtyMinTimeSeries       map[string]*CoreStockData `json:"Time Series (30min),omitempty"`
+	HourTimeSeries            map[string]*CoreStockData `json:"Time Series (60min),omitempty"`
+	DailyTimeSeries           map[string]*CoreStockData `json:"Time Series (Daily),omitempty"`
+	WeeklyTimeSeries          map[string]*CoreStockData `json:"Weekly Time Series,omitempty"`
+	WeeklyAdjustedTimeSeries  map[string]*CoreStockData `json:"Weekly Adjusted Time Series,omitempty"`
 }
 
 func (c *Client) GetTimeSeriesStockData(ctx context.Context, options *CoreStockSharedInputOptions) (*CoreStockResponse, error) {
@@ -150,11 +150,11 @@ func (c *Client) GetTimeSeriesStockData(ctx context.Context, options *CoreStockS
 	var res CoreStockResponse
 	if strings.ToLower(string(options.Datatype)) == "csv" {
 		if err := c.doCSVRequest(req, &res); err != nil {
-			return nil, fmt.Errorf("failed to get news sentiment: %w", err)
+			return nil, fmt.Errorf("failed to get time sereis stock data: %w", err)
 		}
 	} else {
 		if err := c.doJSONRequest(req, &res); err != nil {
-			return nil, fmt.Errorf("failed to get news sentiment: %w", err)
+			return nil, fmt.Errorf("failed to get time sereis stock data: %w", err)
 		}
 	}
 

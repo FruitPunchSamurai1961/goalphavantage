@@ -78,7 +78,7 @@ func TestGetTopLosersGainersStock(t *testing.T) {
 	checkRankedStockList(t, res.MostActivelyTraded, "most actively traded")
 }
 
-func checkRankedStockList(t *testing.T, stocks []goalphavantage.RankedStock, listType string) {
+func checkRankedStockList(t *testing.T, stocks []*goalphavantage.RankedStock, listType string) {
 	for i, stock := range stocks {
 		assert.NotEmpty(t, stock.Ticker, fmt.Sprintf("Expecting non-empty ticker for %s #%d", listType, i+1))
 		assert.NotEmpty(t, stock.Price, fmt.Sprintf("Expecting non-empty price for %s #%d", listType, i+1))
