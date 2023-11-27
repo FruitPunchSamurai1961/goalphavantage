@@ -4,32 +4,43 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 type Topic string
 type Sort string
 
-const (
-	Blockchain                Topic = "blockchain"
-	Earnings                  Topic = "earnings"
-	IPO                       Topic = "ipo"
-	MergersAndAcquisitions    Topic = "mergers_and_acquisitions"
-	FinancialMarkets          Topic = "financial_markets"
-	EconomyFiscal             Topic = "economy_fiscal"
-	EconomyMonetary           Topic = "economy_monetary"
-	EconomyMacro              Topic = "economy_macro"
-	EnergyAndTransportation   Topic = "energy_transportation"
-	Finance                   Topic = "finance"
-	LifeSciences              Topic = "life_sciences"
-	Manufacturing             Topic = "manufacturing"
-	RealEstateAndConstruction Topic = "real_estate"
-	RetailAndWholesale        Topic = "retail_wholesale"
-	Technology                Topic = "technology"
+func (t Topic) Valid() bool {
+	switch strings.ToLower(string(t)) {
+	case "", "blockchain", "earnings", "ipo", "mergers_and_acquisitions", "financial_markets", "economy_fiscal", "economy_monetary", "economy_macro", "energy_transportation", "finance", "life_sciences", "manufacturing", "real_estate", "retail_wholesale", "technology":
+		return true
+	default:
+		return false
+	}
+}
 
-	Latest    Sort = "LATEST"
-	Earliest  Sort = "EARLIEST"
-	Relevance Sort = "RELEVANCE"
-)
+func (s Sort) Valid() bool {
+	switch strings.ToLower(string(s)) {
+	case "", "latest", "earliest", "relevance":
+		return true
+	default:
+		return false
+	}
+}
+
+func (n NewsSentimentOptions) Valid() bool {
+	if !n.Sort.Valid() {
+		return false
+	}
+
+	for _, topic := range n.Topics {
+		if !topic.Valid() {
+			return false
+		}
+	}
+
+	return true
+}
 
 type NewsSentimentOptions struct {
 	Tickers  []string `url:"tickers,omitempty"`
@@ -90,6 +101,11 @@ type RankingResponse struct {
 }
 
 func (c *Client) GetNewsSentiment(ctx context.Context, options *NewsSentimentOptions) (*NewsSentimentResponse, error) {
+
+	if !options.Valid() {
+		return nil, InValidInputError
+	}
+
 	apiURL := fmt.Sprintf("%sfunction=NEWS_SENTIMENT&%s", c.BaseURL, c.buildQuery(options))
 
 	req, err := http.NewRequest(http.MethodGet, apiURL, nil)

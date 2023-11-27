@@ -16,6 +16,10 @@ import (
 
 const baseURL = "https://www.alphavantage.co/query?"
 
+var (
+	InValidInputError = errors.New("invalid input provided")
+)
+
 type Client struct {
 	BaseURL    string
 	apiKey     string

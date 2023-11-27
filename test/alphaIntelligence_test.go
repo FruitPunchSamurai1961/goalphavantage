@@ -43,6 +43,16 @@ func TestGetNewsSentimentWithTickerOption(t *testing.T) {
 	assert.True(t, ok, fmt.Sprintf("expecting APIError got: %v", errInvalid))
 
 	assert.Nil(t, resInvalid, "expecting nil result for invalid tickers")
+
+	// Test for Invalid Sort Input
+	optionsInvalidInput := goalphavantage.NewsSentimentOptions{
+		Tickers: []string{"AAPL", "IBM"},
+		Sort:    "INVALID",
+	}
+	resInvalidInput, errInvalidInput := c.GetNewsSentiment(ctx, &optionsInvalidInput)
+	assert.NotNil(t, errInvalidInput, "expecting non-nil error for invalid tickers")
+	assert.Nil(t, resInvalidInput, "expecting nil result for invalid tickers")
+	assert.ErrorIs(t, errInvalidInput, errInvalidInput, "expecting error to be invalid input")
 }
 
 func TestGetTopLosersGainersStock(t *testing.T) {
