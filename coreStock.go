@@ -25,7 +25,7 @@ func (f Function) Valid() bool {
 
 func (d DataType) Valid() bool {
 	switch strings.ToLower(string(d)) {
-	case "json", "csv":
+	case "", "json", "csv":
 		return true
 	default:
 		return false
