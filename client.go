@@ -130,17 +130,13 @@ func readCSV(reader *csv.Reader, v interface{}) error {
 	}
 
 	switch v := v.(type) {
-	case *[]ActiveListing:
+	case *[]Listing:
 		for _, record := range records {
-			listing := ActiveListing{
+			listing := Listing{
 				Symbol:    record["symbol"],
 				Name:      record["name"],
 				Exchange:  record["exchange"],
 				AssetType: record["assetType"],
-			}
-
-			if listing.Name == "" {
-				listing.Name = listing.Symbol
 			}
 
 			*v = append(*v, listing)
