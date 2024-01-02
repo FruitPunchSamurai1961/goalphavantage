@@ -10,6 +10,6 @@ func getApiKey() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	apiKey := os.Getenv("API_KEY")
+	apiKey, _ := os.LookupEnv("API_KEY")
 	return apiKey, nil
 }

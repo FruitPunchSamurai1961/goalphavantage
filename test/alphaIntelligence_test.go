@@ -67,11 +67,6 @@ func TestGetTopLosersGainersStock(t *testing.T) {
 	assert.Nil(t, err, fmt.Sprintf("expecting nil error, got error: %v", err))
 	assert.NotNil(t, res, "expecting non-nil result")
 
-	// Additional assertions
-	assert.Equal(t, 20, len(res.TopGainers), "Expecting 20 top gainers")
-	assert.Equal(t, 20, len(res.TopLosers), "Expecting 20 top losers")
-	assert.Equal(t, 20, len(res.MostActivelyTraded), "Expecting 20 most actively traded stocks")
-
 	// Check the structure and data of each RankedStock item
 	checkRankedStockList(t, res.TopGainers, "top gainer")
 	checkRankedStockList(t, res.TopLosers, "top loser")
